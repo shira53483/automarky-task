@@ -1,0 +1,109 @@
+<div class="main-container">
+  <div class="card auth-card fade-in">
+    
+    <div class="card-header text-white text-center"
+         [ngClass]="{
+           'bg-success': isSuccess,
+           'bg-danger': !isSuccess && !isLoading,
+           'bg-primary': isLoading
+         }">
+      <h2 class="mb-0">
+        <i class="fas me-2" 
+           [ngClass]="getClasses()"
+        ></i>
+        
+        <span *ngIf="isLoading">Authenticating...</span>
+        <span *ngIf="isSuccess">Login Successful!</span>
+        <span *ngIf="!isSuccess && !isLoading">Login Error</span>
+      </h2>
+    </div>
+
+    <div class="card-body p-4 text-center">
+      
+      <div *ngIf="isLoading" class="mb-4">
+        <div class="spinner-border text-primary mb-3" role="status">
+          <span class="visually-hidden">Authenticating...</span>
+        </div>
+        <p class="text-muted">Validating the link...</p>
+      </div>
+
+      <div *ngIf="!isLoading && isSuccess">
+        <div class="mb-4">
+          <i class="fas fa-user-check text-success" style="font-size: 4rem;"></i>
+        </div>
+
+        <h3 class="text-success mb-3">🎉 You are logged in!</h3>
+        
+        <p class="lead mb-3">{{ message }}</p>
+
+        <div class="alert alert-success mb-4">
+          <i class="fas fa-envelope me-2"></i>
+          <strong>Email:</strong> {{ email }}
+        </div>
+
+        <div class="row text-center mb-4">
+          <div class="d-flex col-md-6 mb-2">
+            <div class="p-3 bg-light rounded">
+              <i class="fas fa-clock text-primary mb-2"></i>
+              <br>
+              <small class="text-muted">Login Time</small>
+              <br>
+              <small><strong>{{ loginTime }}</strong></small>
+            </div>
+          </div>
+          
+          <div class="d-flex col-md-6 mb-2">
+            <div class="p-3 bg-light rounded">
+              <i class="fas fa-shield-alt text-success mb-2"></i>
+              <br>
+              <small class="text-muted">Status</small>
+              <br>
+              <small><strong>Securely Connected</strong></small>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button 
+            class="btn btn-primary btn-lg" 
+            (click)="goHome()">
+            <i class="fas fa-home me-2"></i>
+            Back to Home
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="!isLoading && !isSuccess">
+        <div class="mb-4">
+          <i class="fas fa-4x mb-3" 
+             [ngClass]="[getErrorIcon(), getErrorColor()]"></i>
+        </div>
+
+        <h3 class="mb-3" [ngClass]="getErrorColor()">
+          <span *ngIf="errorType === 'TOKEN_EXPIRED'">⏰ Link Expired</span>
+          <span *ngIf="errorType === 'TOKEN_ALREADY_USED'">⚠️ Link Already Used</span>
+          <span *ngIf="errorType === 'INVALID_TOKEN'">🚫 Invalid Link</span>
+          <span *ngIf="!['TOKEN_EXPIRED', 'TOKEN_ALREADY_USED', 'INVALID_TOKEN'].includes(errorType)">💥 Error</span>
+        </h3>
+        
+        <p class="lead mb-4">{{ message }}</p>
+
+        <div class="d-grid gap-2">          
+          <button 
+            class="btn btn-outline-secondary" 
+            (click)="goHome()">
+            <i class="fas fa-home me-2"></i>
+            Back to Home
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer text-center bg-light">
+      <small class="text-muted">
+        <i class="fas fa-lock me-1"></i>
+        Magic Link Authentication - Secure Login System
+      </small>
+    </div>
+  </div>
+</div>

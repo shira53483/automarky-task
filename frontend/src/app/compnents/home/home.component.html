@@ -1,0 +1,103 @@
+<div class="main-container">
+  <div class="card auth-card fade-in">
+    <div class="card-header bg-primary text-white text-center">
+      <h2 class="mb-0">
+        <i class="fas fa-envelope me-2"></i>
+        Magic Link Login
+      </h2>
+    </div>
+    
+    <div class="card-body p-4">
+      <div *ngIf="message" class="alert fade-in mb-3" 
+           [ngClass]="{
+             'alert-success': messageType === 'success',
+             'alert-danger': messageType === 'error'
+           }">
+        <i class="fas" 
+           [ngClass]="{
+             'fa-check-circle': messageType === 'success',
+             'fa-exclamation-triangle': messageType === 'error'
+           }"></i>
+        {{ message }}
+      </div>
+
+      <form [formGroup]="emailForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email Address</label>
+          <input 
+            type="email" 
+            class="form-control form-control-lg" 
+            id="email"
+            formControlName="email"
+            placeholder="Enter your email address"
+            [class.is-invalid]="isFieldInvalid('email')"
+            [disabled]="isLoading">
+          
+          <div *ngIf="isFieldInvalid('email')" class="invalid-feedback">
+            {{ getFieldError('email') }}
+          </div>
+        </div>
+
+        <div class="d-grid">
+          <button 
+            type="submit" 
+            class="btn btn-primary btn-lg"
+            [disabled]="isLoading || emailForm.invalid">
+            
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+            
+            <span *ngIf="isLoading">Sending...</span>
+            <span *ngIf="!isLoading">
+              <i class="fas fa-paper-plane me-2"></i>
+              Send Magic Link
+            </span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Additional info -->
+      <div *ngIf="!showLinkInFrontend" class="mt-4 text-center">
+        <small class="text-muted">
+          <i class="fas fa-info-circle me-1"></i>
+          An email with a login link has been sent to you. The link is valid for 15 minutes.
+        </small>
+      </div>
+
+      <!-- Link area when email failed -->
+      <div *ngIf="showLinkInFrontend" class="mt-4 p-4 bg-warning bg-opacity-10 border border-warning rounded fade-in">
+        <h6 class="text-warning mb-3">
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          The email was not sent - use this link instead:
+        </h6>
+        
+        <div class="mb-3 p-2 bg-light rounded">
+          <small class="font-monospace" style="word-break: break-all;">
+            {{ frontendLink }}
+          </small>
+        </div>
+        
+        <div class="d-grid gap-2">
+          <button 
+            class="btn btn-warning" 
+            (click)="openFrontendLink()">
+            <i class="fas fa-arrow-right me-2"></i>
+            Click here to login
+          </button>
+          
+          <button 
+            class="btn btn-outline-secondary btn-sm" 
+            (click)="clearFrontendLink()">
+            <i class="fas fa-times me-1"></i>
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer text-center bg-light">
+      <small class="text-muted">
+        Magic Link Authentication System
+      </small>
+    </div>
+  </div>
+</div>

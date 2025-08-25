@@ -1,11 +1,8 @@
 const { v4: uuidv4 } = require('uuid');
 
-// פתרון זיכרון פשוט - Map לשמירת הטוקנים
-// בפרודקשן, זה יהיה במסד נתונים
 const magicLinks = new Map();
 
-// פונקציה לניקוי טוקנים ישנים
-const LINK_EXPIRATION = 15 * 60 * 1000; // 15 דקות במילישניות
+const LINK_EXPIRATION = 15 * 60 * 1000; 
 
 function cleanExpiredTokens() {
     const now = Date.now();
@@ -29,18 +26,16 @@ setInterval(cleanExpiredTokens, 5 * 60 * 1000);
 class TokenService {
     /**
      * יצירת טוקן חדש
-     * @param {string} email - כתובת המייל
-     * @returns {object} - { token, expiresAt }
+     * @param {string} email 
+     * @returns {object} 
      */
     createToken(email) {
-        // נקה טוקנים ישנים לפני יצירת חדש
         cleanExpiredTokens();
         
         const token = uuidv4();
         const createdAt = Date.now();
         const expiresAt = createdAt + LINK_EXPIRATION;
         
-        // שמירה בזיכרון
         magicLinks.set(token, {
             email: email,
             createdAt: createdAt,

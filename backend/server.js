@@ -1,31 +1,26 @@
 const express = require('express');
+const cors = require('cors');
 require('dotenv').config();
 
-const corsMiddleware = require('./middleware/corsMiddleware');
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(corsMiddleware);
+// CORS - allow all origins for now
+app.use(cors({
+    origin: true,
+    credentials: true
+}));
+
 app.use(express.json());
-app.use(express.static('public'));
 
 // Routes
-app.use('/api', authRoutes);  // API routes only
-
-// Direct redirect route (מחוץ ל-API)
+app.use('/api', authRoutes);
 app.get('/verify/:token', require('./controllers/authController').redirectToAngular);
 
-// הפעלת השרת
 app.listen(PORT, () => {
-    console.log(`🚀 השרת רץ על http://localhost:${PORT}`);
-    console.log('🔗 API Endpoints:');
-    console.log('   POST /api/send-link');
-    console.log('   GET  /api/verify/:token');
-    console.log('   GET  /verify/:token (redirect)');
-    console.log('---');
+    console.log(`Server running on http://localhost:${PORT}`);
 });
 
 module.exports = app;

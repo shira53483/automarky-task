@@ -18,6 +18,9 @@ app.use(express.json());
 // Routes
 app.use('/api', authRoutes);
 app.get('/verify/:token', require('./controllers/authController').redirectToAngular);
+app.get('/', (req, res) => {
+  res.send('Backend is alive!');
+});
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

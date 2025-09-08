@@ -20,7 +20,8 @@ class AuthController {
             
             const { token } = tokenService.createToken(email);
             
-            const magicLink = `http://localhost:${process.env.PORT || 3000}/verify/${token}`;
+            const backendURL = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 3000}`;
+            const magicLink = `${backendURL}/verify/${token}`;
             
             const emailResult = await emailService.sendMagicLinkEmail(email, magicLink);
             
@@ -98,13 +99,14 @@ class AuthController {
      */
     redirectToAngular(req, res) {
         const { token } = req.params;
-        
+        const frontendURL = process.env.FRONTEND_URL || 'http://localhost:4200';
+
         if (!token) {
-            return res.redirect('http://localhost:4200/?error=missing_token');
+            return res.redirect(`${frontendURL}/?error=missing_token`);
         }
 
         // Redirect to Angular with the token
-        res.redirect(`http://localhost:4200/verify/${token}`);
+        res.redirect(`${frontendURL}/verify/${token}`);
     }
 }
 

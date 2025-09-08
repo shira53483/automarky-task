@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { environment } from '../../../environment/environment';
+import { environment } from '../../../environment/environment.production';
 
 interface VerifyResponse {
   success: boolean;

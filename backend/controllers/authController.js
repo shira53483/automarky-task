@@ -28,13 +28,7 @@ class AuthController {
             if (emailResult.success) {
                 res.json({ 
                     success: true,
-                    message: 'Email sent successfully! Check your inbox.',
-                    debugInfo: {
-                        token: token,
-                        link: magicLink,
-                        sentViaEmail: true,
-                        method: emailResult.method
-                    }
+                    message: 'Email sent successfully! Check your inbox.'
                 });
             } else {
                 // Email failed - show the link in the frontend
